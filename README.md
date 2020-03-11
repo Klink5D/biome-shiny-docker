@@ -2,7 +2,7 @@
 
 ### Introduction
 
-This is a Docker image for the [Biome-Shiny microbiome visualization tool](github.com/BioData-PT/Biome-Shiny), created to simplify and speed up the deployment of this tool across several machines.
+This is a Docker image for the [Biome-Shiny microbiome visualization tool](https://github.com/BioData-PT/Biome-Shiny), created to simplify and speed up the deployment of this tool across several machines.
 The image, based on Ubuntu 18.04, will provide the user with all the dependencies necessary to run the Biome-Shiny application, thus making it an ideal way to distribute the tool in a work or education environment.
 
 ### Installation
