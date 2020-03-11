@@ -2,12 +2,12 @@
 
 ### Introduction
 
-This is a Docker image for the ![github.com/BioData-PT/Biome-Shiny](Biome-Shiny microbiome visualization tool), created to simplify and speed up the deployment of this tool across several machines.
+This is a Docker image for the [Biome-Shiny microbiome visualization tool](github.com/BioData-PT/Biome-Shiny), created to simplify and speed up the deployment of this tool across several machines.
 The image, based on Ubuntu 18.04, will provide the user with all the dependencies necessary to run the Biome-Shiny application, thus making it an ideal way to distribute the tool in a work or education environment.
 
 ### Installation
 
-You will first need to install Docker for your machine. For this, please follow the instructions in the ![https://docs.docker.com](Docker documentation website).
+You will first need to install Docker for your machine. For this, please follow the instructions in the [Docker documentation website](https://docs.docker.com).
 
 Once Docker is installed on your machine, to pull the latest version of the Biome-Shiny docker image, all you need to do is type the following command into your terminal:
 
