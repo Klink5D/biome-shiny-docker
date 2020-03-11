@@ -14,6 +14,9 @@ Once Docker is installed on your machine, to pull the latest version of the Biom
 ```sh
 docker pull hmcs/biome-shiny-docker:latest
 ```
+
+### Running a Biome-Shiny session
+
 Once the image is downloaded, you can create a new container by running the following command:
 
 ```sh
