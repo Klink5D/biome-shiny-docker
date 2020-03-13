@@ -31,6 +31,7 @@ RUN R -e "install.packages('ggplot2')"
 RUN R -e "install.packages('plotly')"
 RUN R -e "install.packages('heatmaply')"
 RUN R -e "install.packages('ggpubr')"
+RUN R -e "install.packages('hrbrthemes')"
 
 #Other required libraries
 RUN R -e "install.packages('vegan')"

@@ -20,7 +20,7 @@ docker pull hmcs/biome-shiny-docker:latest
 Once the image is downloaded, you can create a new container by running the following command:
 
 ```sh
-docker start -p 3838:3838 hmcs/biome-shiny-docker:latest
+docker run -p 3838:3838 -d hmcs/biome-shiny-docker:latest
 ```
 This will start a local Shiny Server session on your machine, running Biome-Shiny. To open it, type `localhost:3838` on your web browser of choice.
 

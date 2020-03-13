@@ -28,9 +28,9 @@ Basic information about the loaded dataset.
 
 Heatmap comparing abundance values for each OTU per sample.
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-  coreHeatmapParams()
-```
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width = 12, fig.align='center'}
+  plot_heatmap(datasetInput())
+``` 
 
 ## 3. Community Composition
 
@@ -38,12 +38,12 @@ Community composition plots show the abundance values for the species belonging 
 
 ### 3.1. Abundance Plot (Counts)
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=12, fig.width=30, fig.align='center'}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width = 12, fig.align='center'}
     taxglom <- tax_glom(datasetInput(), taxrank=input$v4)
         if(input$communityPlotFacetWrap == FALSE){
-      compositionplot <- plot_ordered_bar(taxglom, x=input$z1, y="Abundance", fill=input$v4, title=paste0("Abundance by ", input$v4, " in ", input$z1))  + geom_bar(stat="identity") + theme_pubr(base_size = 10, margin = TRUE, legend = "right", x.text.angle = 90) + rremove("xlab") + rremove("ylab")
+      compositionplot <- plot_bar(taxglom, x=input$z1, y="Abundance", fill=input$v4, title=paste0("Abundance by ", input$v4, " in ", input$z1))  + geom_bar(stat="identity") + theme_pubr(base_size = 10, margin = TRUE, legend = "right", x.text.angle = 90) + rremove("xlab") + rremove("ylab")
     } else {
-      compositionplot <- plot_ordered_bar(taxglom, x=input$z1, y="Abundance", fill=input$v4, title=paste0("Abundance by ", input$v4, " in ", input$z1))  + geom_bar(stat="identity") + theme_pubr(base_size = 10, margin = TRUE, legend = "right", x.text.angle = 90) + facet_grid(paste('~',input$z2), scales = "free", space = "free") + rremove("xlab") + rremove("ylab")
+      compositionplot <- plot_bar(taxglom, x=input$z1, y="Abundance", fill=input$v4, title=paste0("Abundance by ", input$v4, " in ", input$z1))  + geom_bar(stat="identity") + theme_pubr(base_size = 10, margin = TRUE, legend = "right", x.text.angle = 90) + facet_grid(paste('~',input$z2), scales = "free", space = "free") + rremove("xlab") + rremove("ylab")
     }
     if(input$transparentCommunityPlot == TRUE){
       compositionplot <- compositionplot +
@@ -55,24 +55,25 @@ print(p)
 
 ### 3.2. Abundance Plot (Relative)
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE,fig.height=12, fig.width=30, fig.align='center'}
-    taxglom <- tax_glom(compositionalInput(), taxrank=input$v4)
-    if(input$communityPlotFacetWrap == FALSE){
-      compositionplot <- plot_ordered_bar(taxglom, x=input$z1, fill=input$v4, title=paste0("Relative abundance by ", input$v4, " in ", input$z1))  + geom_bar(stat="identity") +
-        guides(fill = guide_legend(ncol = 1)) +
-        scale_y_percent() +
-        theme_pubr(base_size = 10, margin = TRUE, legend = "right", x.text.angle = 90) + rremove("xlab") + rremove("ylab")
-    } else {
-      compositionplot <- plot_ordered_bar(taxglom, x=input$z1,  fill=input$v4, title=paste0("Relative abundance by ", input$v4, " in ", input$z1))  + geom_bar(stat="identity") +
-        guides(fill = guide_legend(ncol = 1)) +
-        scale_y_percent() + facet_grid(paste('~',input$z2),scales = "free", space = "free") + rremove("xlab") + rremove("ylab")
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width = 12, fig.align='center'}
+    taxglom <- tax_glom(microbiome::transform(datasetInput(), "compositional"), taxrank=input$v4)
+    compositionplot <- plot_bar(taxglom, x=input$z1, fill=input$v4, 
+                        title=paste0("Relative abundance by ", input$v4, " in ", input$z1))  +  
+                        geom_bar(stat="identity") +
+                        guides(fill = guide_legend(ncol = 1)) +
+                        scale_y_percent() +
+                        theme_pubr(base_size = 10, margin = TRUE, legend = "right", x.text.angle = 90)
+    if(input$communityPlotFacetWrap == TRUE){
+      compositionplot <- compositionplot + facet_grid(paste('~',input$z2),scales = "free", space = "free")
     }
     if(input$transparentCommunityPlot == TRUE){
       compositionplot <- compositionplot +
-        theme(panel.background = element_rect(fill = "transparent", colour = NA), plot.background = element_rect(fill = "transparent", colour = NA), legend.background = element_rect(fill = "transparent", colour = NA), legend.box.background = element_rect(fill = "transparent", colour = NA))
+        theme(panel.background = element_rect(fill = "transparent", colour = NA), 
+              plot.background = element_rect(fill = "transparent", colour = NA), 
+              legend.background = element_rect(fill = "transparent", colour = NA), 
+              legend.box.background = element_rect(fill = "transparent", colour = NA))
     }
-    p <- compositionplot
-    return(p)
+  print(compositionplot)
 ```
 
 ## 4. Alpha Diversity
@@ -123,7 +124,7 @@ Abundance can be measured either by the absolute number of a given species in th
 
 ### 4.6. Richness Plot
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center',fig.width=20,fig.height=5}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.width = 12, fig.align='center'}
     if(input$richnessPlotGridWrap == FALSE){
       richnessplot <- plot_richness(
         datasetInput(),
@@ -176,14 +177,18 @@ The ordination plot for taxa measures the similarity in genetic composition betw
         datasetInput(),
         ordinateDataTaxa(),
         type = "taxa",
+        title = "Ordination Plot",
         color = input$zb,
         label = input$xb
-      ) + geom_point(size = input$geom.size3) + theme_pubr(base_size = 10, margin = TRUE, legend = "right")
+      ) + geom_point(size = input$geom.size.taxa) + theme_pubr(base_size = 10, margin = TRUE, legend = "right")
     if(input$transparentTaxaOrd){
       taxaOrdplot <- taxaOrdplot +
-        theme(panel.background = element_rect(fill = "transparent", colour = NA), plot.background = element_rect(fill = "transparent", colour = NA), legend.background = element_rect(fill = "transparent", colour = NA), legend.box.background = element_rect(fill = "transparent", colour = NA))
+        theme(panel.background = element_rect(fill = "transparent", colour = NA), 
+              plot.background = element_rect(fill = "transparent", colour = NA), 
+              legend.background = element_rect(fill = "transparent", colour = NA), 
+              legend.box.background = element_rect(fill = "transparent", colour = NA))
     }
-print(taxaOrdplot)
+
 ```
 
 ## 6. PERMANOVA test
@@ -227,7 +232,7 @@ A plot determining the OTUs which are most relevant for composition differences 
 
 The network plot can be used to find relations between samples. 
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.height=10, fig.width=10, fig.align='center'}
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
       n <- make_network(compositionalInput(), type = "samples", distance = input$permanovaDistanceMethodNet, max.dist = 0.2)
       p <- plot_network(n, compositionalInput(), type = "samples", shape = input$permanovaMetaShapeNet, color = input$permanovaMetadataNet, line_weight = 0.4)
 
